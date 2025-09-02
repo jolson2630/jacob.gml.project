@@ -1,0 +1,117 @@
+CREATE
+//moving
+moveDir = 0;
+moveSpd = 2;
+xspd = 0;
+yspd = 0;
+//jumping
+grav = .275;
+termVel = 4;
+jspd = -4.5;
+jump = 0; 
+
+-----
+STEP
+if (sprite_index == PAL) or (sprite_index == PAR) exit;
+
+//inputs
+rightKey = keyboard_check(ord("D"));
+leftKey = keyboard_check(ord("A"));
+jumpKeyPressed = keyboard_check_pressed(vk_space);
+
+//X movement
+moveDir = rightKey-leftKey;
+
+//get speed
+xspd=moveDir*moveSpd;
+
+// x col
+var _subPixel = .5;
+if place_meeting ( x+xspd, y, oWall )
+{
+	var _pixelCheck = _subPixel * sign(xspd);
+	while !place_meeting(x+_pixelCheck, y, oWall)
+	{
+		x+=_pixelCheck;
+	}
+
+	xspd = 0;
+}
+//xmove
+x+=xspd;
+
+// Yspeed
+yspd += grav;
+if yspd > termVel { yspd = termVel };
+
+//jump
+
+if place_meeting(x,y+1,oWall)
+{
+	jump = 1;
+}
+
+if jumpKeyPressed
+{
+	if place_meeting(x,y+1, oWall){
+	yspd = jspd;
+	}
+	else if (jump == 1)
+	{
+	 jump -=1;
+		yspd = jspd;
+	}
+	else if place_meeting(x+1,y,oWall) or place_meeting(x-1,y,oWall){
+		yspd=jspd;
+		 
+	}
+}
+
+//yCol
+if place_meeting ( x,y+yspd,oWall)
+{
+	var _pixelCheck = _subPixel * sign(yspd);
+	while !place_meeting(x, y + _pixelCheck, oWall)
+	{
+		y+=_pixelCheck;
+	}
+
+	yspd = 0;
+}
+
+y+=yspd;
+
+//animation
+if (moveDir !=0){
+	if(moveDir > 0){
+		sprite_index = PlWalkR;
+	}
+	else{
+		sprite_index = PlWalkL;
+	}
+}
+
+if (moveDir == 0){
+	if(sprite_index == PlWalkR)
+	sprite_index = PlookR;
+	else if (sprite_index == PlWalkL)
+	sprite_index = PLookL;
+}
+
+if (y>670){
+	y= 510;
+	x=640;
+}
+
+-----
+LEFT PRESSED
+if (sprite_index == PLookL) or (sprite_index == PlWalkL)
+{ moveSpd = 0;
+sprite_index = PAL
+};
+if (sprite_index == PlookR) or (sprite_index == PlWalkR) 
+{ moveSpd = 0;
+sprite_index = PAR	
+};
+moveSpd = 2;
+
