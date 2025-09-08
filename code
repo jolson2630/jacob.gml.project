@@ -1,3 +1,5 @@
+PLAYER CODE
+
 CREATE
 //moving
 moveDir = 0;
@@ -114,4 +116,95 @@ if (sprite_index == PlookR) or (sprite_index == PlWalkR)
 sprite_index = PAR	
 };
 moveSpd = 2;
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+ENEMY CODE
+
+CREATE
+//moving
+moveDir = 0;
+moveSpd = 1;
+xspd = 0;
+yspd = 0;
+//jumping
+grav = .275;
+termVel = 4;
+jspd = -4.5;
+jump = 0; 
+
+yloc  = y;
+xloc = x;
+
+----
+STEP
+
+// x movement
+if (y+16 < Player.y) or (y-16 > Player.y) exit;
+
+if (Player.x < x-16){
+	xspd = -moveSpd;
+}
+else if (Player.x> x+16){
+	xspd = moveSpd;
+}
+else{
+	xspd = 0;
+}
+if (x + 150 < Player.x)
+xspd = 0;
+else if (x - 150 > Player.x)
+xspd = 0;
+
+
+
+//Collisions
+var _subPixel = .5;
+if place_meeting ( x+xspd, y, oWall )
+{
+	var _pixelCheck = _subPixel * sign(xspd);
+	while !place_meeting(x+_pixelCheck, y, oWall)
+	{
+		x+=_pixelCheck;
+	}
+
+	xspd = 0;
+}
+
+if !place_meeting(x + sign(xspd)*32,y+1,oWall)
+{
+	var _pixelCheck = _subPixel * sign(xspd);
+	while place_meeting(x+_pixelCheck, y, oWall)
+	{
+		x+=_pixelCheck;
+	}
+
+	xspd = 0;
+}
+if place_meeting ( x+xspd, y, Enemy )
+{
+	var _pixelCheck = _subPixel * sign(xspd);
+	while !place_meeting(x+_pixelCheck, y, Enemy)
+	{
+		x+=_pixelCheck;
+	}
+
+	xspd = 0;
+}
+x+=xspd
+//y movement
+yspd += grav;
+if yspd > termVel { yspd = termVel };
+
+if place_meeting ( x,y+yspd,oWall)
+{
+	var _pixelCheck = _subPixel * sign(yspd);
+	while !place_meeting(x, y + _pixelCheck, oWall)
+	{
+		y+=_pixelCheck;
+	}
+
+	yspd = 0;
+}
+
+y+=yspd;
 
