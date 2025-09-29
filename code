@@ -1,8 +1,6 @@
-PLAYER CODE
-
-CREATE
 //moving
 moveDir = 0;
+moveDir2 = 0;
 moveSpd = 2;
 xspd = 0;
 yspd = 0;
@@ -12,35 +10,24 @@ termVel = 4;
 jspd = -4.5;
 jump = 0; 
 
------
-STEP
-if (sprite_index == PAL) or (sprite_index == PAR) exit;
+phealth = 3;
 
-//inputs
+haskey=false;
+
+xloc = x;
+yloc = y;
+
+
+//Inputs
 rightKey = keyboard_check(ord("D"));
 leftKey = keyboard_check(ord("A"));
 jumpKeyPressed = keyboard_check_pressed(vk_space);
 
-//X movement
-moveDir = rightKey-leftKey;
+if (sprite_index == PAR) or (sprite_index == PAL)
+jumpKeyPressed = false;
 
-//get speed
-xspd=moveDir*moveSpd;
-
-// x col
+//misc
 var _subPixel = .5;
-if place_meeting ( x+xspd, y, oWall )
-{
-	var _pixelCheck = _subPixel * sign(xspd);
-	while !place_meeting(x+_pixelCheck, y, oWall)
-	{
-		x+=_pixelCheck;
-	}
-
-	xspd = 0;
-}
-//xmove
-x+=xspd;
 
 // Yspeed
 yspd += grav;
@@ -80,8 +67,73 @@ if place_meeting ( x,y+yspd,oWall)
 
 	yspd = 0;
 }
+if place_meeting ( x,y+yspd,Enemy)
+{
+	var _pixelCheck = _subPixel * sign(yspd);
+	while !place_meeting(x, y + _pixelCheck, Enemy)
+	{
+		y+=_pixelCheck;
+	}
+
+	yspd = 0;
+}
+if place_meeting ( x,y+yspd,Boss)
+{
+	var _pixelCheck = _subPixel * sign(yspd);
+	while !place_meeting(x, y + _pixelCheck, Boss)
+	{
+		y+=_pixelCheck;
+	}
+
+	yspd = 0;
+}
 
 y+=yspd;
+
+if (sprite_index == PAL) or (sprite_index == PAR) exit;
+
+
+//X movement
+moveDir = rightKey-leftKey;
+
+//get speed
+xspd=moveDir*moveSpd;
+
+// x col
+
+if place_meeting ( x+xspd, y, oWall )
+{
+	var _pixelCheck = _subPixel * sign(xspd);
+	while !place_meeting(x+_pixelCheck, y, oWall)
+	{
+		x+=_pixelCheck;
+	}
+
+	xspd = 0;
+}
+if place_meeting ( x+xspd, y, Boss )
+{
+	var _pixelCheck = _subPixel * sign(xspd);
+	while !place_meeting(x+_pixelCheck, y, Boss)
+	{
+		x+=_pixelCheck;
+	}
+
+	xspd = 0;
+}
+if place_meeting ( x+xspd, y, Enemy )
+{
+	var _pixelCheck = _subPixel * sign(xspd);
+	while !place_meeting(x+_pixelCheck, y, Enemy)
+	{
+		x+=_pixelCheck;
+	}
+
+	xspd = 0;
+}
+//xmove
+x+=xspd;
+
 
 //animation
 if (moveDir !=0){
@@ -100,19 +152,52 @@ if (moveDir == 0){
 	sprite_index = PLookL;
 }
 
-if (y>670){
-	y= 510;
-	x=640;
-}
+if (room == Room1)
+draw_text(0,0,"Enemies left: " + string(instance_number(Enemy)));
 
------
-LEFT PRESSED
+if (instance_exists(Time))
+draw_text(0,20,"Time: " + string(Time.time/60))
+else
+draw_text(0,20,"put the timer object in stupid")
+
 if (sprite_index == PLookL) or (sprite_index == PlWalkL)
 { moveSpd = 0;
+moveDir2 = moveDir;
+moveDir = 0;
 sprite_index = PAL
+instance_create_depth(Player.x+4,Player.y-3, depth-1, PAttackL);
 };
 if (sprite_index == PlookR) or (sprite_index == PlWalkR) 
 { moveSpd = 0;
 sprite_index = PAR	
+instance_create_depth(Player.x-4,Player.y-3, depth-1, PAttackR);
 };
 moveSpd = 2;
+moveDir = moveDir2;
+
+phealth --;
+if (phealth == 0){
+	room_goto(Room1)
+	room_restart();
+	x=xloc;
+	y=yloc;
+}
+
+phealth --;
+if (phealth == 0){
+	room_goto(Room1)
+}
+
+phealth --;
+if (phealth == 0){
+	room_goto(Room1)
+}
+
+if !(instance_exists(PAttackL)) and !(instance_exists(PAttackR)){
+if (sprite_index == PAR )
+{sprite_index = PlookR};
+if (sprite_index == PAL )
+{sprite_index = PLookL};
+
+
+}
