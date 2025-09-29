@@ -1,0 +1,148 @@
+//moving
+moveDir = 0;
+moveDir2 = 0;
+moveSpd = 2;
+xspd = 0;
+yspd = 0;
+//jumping
+grav = .275;
+termVel = 4;
+jspd = -4.5;
+jump = 0; 
+
+phealth = 20;
+
+timer = 0;
+
+hit = false;
+
+ 
+//misc
+var _subPixel = .5;
+
+// Yspeed
+yspd += grav;
+if yspd > termVel { yspd = termVel };
+
+//yCol
+if place_meeting ( x,y+yspd,oWall)
+{
+	var _pixelCheck = _subPixel * sign(yspd);
+	while !place_meeting(x, y + _pixelCheck, oWall)
+	{
+		y+=_pixelCheck;
+	}
+
+	yspd = 0;
+}
+if place_meeting ( x,y+yspd,Enemy)
+{
+	var _pixelCheck = _subPixel * sign(yspd);
+	while !place_meeting(x, y + _pixelCheck, Enemy)
+	{
+		y+=_pixelCheck;
+	}
+
+	yspd = 0;
+}
+
+y+=yspd;
+
+if (sprite_index == BAL) or (sprite_index == BAR) exit;
+
+
+//X movement
+moveDir = Player.x - x;
+
+//get speed
+xspd=sign(moveDir)*moveSpd;
+
+// x col
+
+if place_meeting ( x+xspd, y, oWall )
+{
+	var _pixelCheck = _subPixel * sign(xspd);
+	while !place_meeting(x+_pixelCheck, y, oWall)
+	{
+		x+=_pixelCheck;
+	}
+
+	xspd = 0;
+}
+if place_meeting ( x+xspd, y, Player )
+{
+	var _pixelCheck = _subPixel * sign(xspd);
+	while !place_meeting(x+_pixelCheck, y, Player)
+	{
+		x+=_pixelCheck;
+	}
+
+	xspd = 0;
+}
+//xmove
+if  !((x+16<Player.x) or (x-16>Player.x))
+xspd = 0;
+
+if (hit){
+	if (Player.sprite_index == PAL)
+	x -= 10;
+	else
+	x += 10;
+	
+	hit = false
+}
+
+x+=xspd;
+
+
+//animation
+if (xspd !=0){
+	if(xspd > 0){
+		sprite_index = BWalkR;
+	}
+	else{
+		sprite_index = BWalkL;
+	}
+}
+
+if (xspd == 0){
+	if(sprite_index == BWalkR)
+	sprite_index = BLookR;
+	else if (sprite_index == BWalkL)
+	sprite_index = BLookL;
+}
+
+timer ++;
+
+if (timer > 50){
+
+if place_meeting(x+10,y,Player){
+	sprite_index = BAR
+	instance_create_depth(x-4,y-3, depth-1, BAttackR);
+	timer = 0;
+}
+
+else if place_meeting(x-10,y,Player){
+	sprite_index = BAL
+	instance_create_depth(x+4,y-3, depth-1, BAttackL);
+	timer = 0;
+}
+
+}
+
+phealth --;
+if (phealth < 1)
+instance_destroy()
+hit = true;
+
+phealth --;
+if (phealth < 1)
+instance_destroy()
+hit = true;
+
+if !(instance_exists(BAttackL)) and !(instance_exists(BAttackR)){
+if (sprite_index == BAR )
+{sprite_index = BLookR};
+if (sprite_index == BAL )
+{sprite_index = BLookL};
+}
