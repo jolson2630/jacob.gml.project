@@ -13,4 +13,9 @@ Did some polishing
 learned how to have the character move with the attack when in the air
 added colors to the stage
 
-Created a boss that follows you and attacks you
+added red sprites for the boss
+added code to make him follow you
+added attacks for the boss
+fixed the attacks going too fast
+
+resulted in a boss that follows you and attacks you
