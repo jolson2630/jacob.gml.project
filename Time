@@ -1,0 +1,37 @@
+global.highscore = 0;
+global.currentScore=0;
+var _file = "highscore.ini";
+    if (file_exists(_file)) {
+        ini_open(_file);
+        global.highscore = ini_read_real("scores", "high", 0); // Use "high" as the key
+        ini_close();
+    }
+	
+time = 0;
+
+done = false;
+
+
+
+if (room == Room1) or (room == Room2)
+time ++;
+
+if (room==Room2) and !(instance_exists(Boss)){
+	room_goto(Win)
+} 
+if (room == Win) and !done{
+	global.currentScore = time/60;
+	if (global.highscore == 0)
+	global.highscore = global.currentScore
+	else if(global.currentScore < global.highscore)
+	global.highscore = global.currentScore;
+	
+        ini_open("highscore.ini");
+        ini_write_real("scores", "high", global.highscore); // Save the new high score
+        ini_close();
+		done = true
+    }
+
+
+if (room == Win)
+draw_text_transformed(682 - 145,ToMenu.y - 85,"High Score: " + string(global.highscore),2,2,0)
