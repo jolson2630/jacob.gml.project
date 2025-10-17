@@ -17,3 +17,4 @@ https://github.com/user-attachments/assets/7603a020-3917-429d-9812-13da67419b53
 
 https://github.com/user-attachments/assets/03a1d814-50c1-4e59-9dcc-f93623499b0f
 
+<img width="64" height="32" alt="playerIdleDown_strip4" src="https://github.com/user-attachments/assets/a4f474ab-7485-49dd-af5d-a1b1184bface" />
