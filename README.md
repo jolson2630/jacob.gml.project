@@ -45,3 +45,12 @@ Week 9:
 <img width="16" height="32" alt="2077492d-a1fe-46d4-a76a-6550af2d65d2" src="https://github.com/user-attachments/assets/b904bfa5-5330-4ee2-b44d-1b094e0b0ed8" />
 <img width="16" height="32" alt="39ce1295-e45a-4647-9654-1f9e3dfb80fc" src="https://github.com/user-attachments/assets/fd65c895-ac30-4f67-88b8-f857d3eba93f" />
 <img width="16" height="32" alt="8c6febfe-ad7d-4716-87e7-af8218e37596" src="https://github.com/user-attachments/assets/a2ae12ed-c5c4-44cb-b61b-89c437ef4b39" />
+
+
+
+https://github.com/user-attachments/assets/5a36eb0c-e26d-494a-9385-7718cfb2e3fd
+
+[Project_8.mp3](https://github.com/user-attachments/files/23469759/Project_8.mp3)
+[Project_7.mp3](https://github.com/user-attachments/files/23469763/Project_7.mp3)
+
+
